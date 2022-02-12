@@ -1,0 +1,40 @@
+Jenifer Rodriguez Delgado and Yousef Suleiman
+CS450 – Programming Assignment#3
+README 
+GetSharedPage: An XV6 system call that allows two processes to share pages
+=========================================================
+To add this new system call, the xv6’s Kernel Makefile and other source code (syscall.c , 
+proc.c…) were edited with the GetSharedPages information following the same behavior as 
+other system calls already existent.
+This system call allows two processes with the unique same key to share pages, read and write, 
+and returns a virtual address. All the information of the processes and keys are located in an 
+array of 32 struct share_page . The processes with the same key share the same physical address. 
+If the key passed as an argument does not yet exist in the array, then a new page is allocated, and 
+the calling process is added to the array.
+The file “sharepage.c” holds the most valuable behavior of the system call. If implementation 
+was needed, this file would be the one to look at.
+How to use this system call? 
+GetSharedPages(int key, int numSharedPgs)
+GetSharedPages() takes two arguments: an integer key (not 0) and an integer that represents the 
+number of shared pages (greater than or equal to 1) and returns a virtual address.
+To execute this system call, call GetSharedPages(int key, int numSharedPgs) from a user 
+program. For example: in shpg1test.c test program we use a :
+GetSharedPages(111,1) // key=111 and we are requesting 1 page table.
+FreeSharedPages: An XV6 system call that removes the calling process from accessing the
+shared pages associated with the key.
+=========================================================
+To add this new system call, the xv6’s Kernel Makefile and other source code (syscall.c , 
+proc.c…) were edited with the FreeSharedPages information following the same behavior as 
+other system calls already existent.
+This system call takes an integer key as an argument and returns the number of pages that the 
+calling process has under that key and then it removes the specified page. When no more 
+processes can access the pages associated with a key, those pages are deallocated. If 
+unsuccessful, returns -1.
+The file “sharepage.c” holds the most valuable behavior of the system call. If implementation 
+was needed, this file would be the one to look at. 
+How to use this system call? 
+FreeSharedPages(int key)
+FreeSharedPages() takes an integer key argument (not 0).
+To execute this system call, call FreeSharedPages(int key) from a user program. For example: in 
+shpg5test.c test program we use a :
+FreeSharedPages(313) // key=313
